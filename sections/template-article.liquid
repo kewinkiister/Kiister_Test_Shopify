@@ -7,8 +7,10 @@
       {% when 'article_title' %}
       <div class="flex items-center justify-center">
         <div class="max-w-7xl text-center">
-          <a href="{{ blog.url }}" class="text-base uppercase text-gray-500 hover:text-gray-900 font-bold">{{ blog.title }}</a>
-          <h1 class="text-4xl md:text-6xl font-medium" itemprop="headline">{{ article.title }}</h1>
+          <a href="{{ blog.url }}" class="text-base uppercase text-gray-500 hover:text-gray-900 font-bold">{{ blog.title }}
+          </a>
+          <h1 class="text-4xl md:text-6xl font-medium" itemprop="headline">{{ article.title }}
+          </h1>
         </div>
       </div>
       {% when 'article_author' %}
@@ -18,7 +20,8 @@
           itemscope
           itemtype="http://schema.org/Person">
           {% if section.settings.enable_author %}
-            <small itemprop="author">{{ article.author }}</small>
+            <small itemprop="author">{{ article.author }}
+            </small>
           {% endif %}
         </div>
       </div>
@@ -26,7 +29,8 @@
       <div class="flex items-center justify-center">
         <div class="max-w-7xl text-center">
           {% if section.settings.enable_published_date %}
-            <time itemprop="datePublished dateCreated" datetime="{{ article.published_at | date: '%Y-%m-%d' }}">{{ article.published_at | date: format: 'on_date' }}</time>
+            <time itemprop="datePublished dateCreated" datetime="{{ article.published_at | date: '%Y-%m-%d' }}">{{ article.published_at | date: format: 'on_date' }}
+            </time>
           {% endif %}
         </div>
       </div>
@@ -65,9 +69,12 @@
         {% paginate article.comments by 5 %}
           {% for comment in article.comments %}
             <div class="flex-1 border my-4 px-4 py-2 sm:px-6 sm:py-4 leading-relaxed">
-              <span class="comment-author">{{ comment.author }}</span>
-              <span class="text-xs text-gray-400">{{ comment.created_at | date: format: 'default' }}</span>
-              <p class="text-sm">{{ comment.content }}</p>
+              <span class="comment-author">{{ comment.author }}
+              </span>
+              <span class="text-xs text-gray-400">{{ comment.created_at | date: format: 'default' }}
+              </span>
+              <p class="text-sm">{{ comment.content }}
+              </p>
             </div>
           {% endfor %}
 
@@ -97,7 +104,8 @@
             <ul class="px-4 mb-3 ml-7 list-decimal">
               {% for error in form.errors %}
                 <li>
-                  <span>{{ form.errors.messages[error] }}</span>
+                  <span>{{ form.errors.messages[error] }}
+                  </span>
                 </li>
               {% endfor %}
             </ul>
@@ -161,24 +169,19 @@
   "@context": "http://schema.org",
       "@type": "BlogPosting",
       "headline": {{ article.title | json }},
-  "articleBody": {{ article.content | strip_html | json }},
-  {% if article.excerpt != blank %}
-    "description": {{ article.excerpt | strip_html | json }},
-  {% endif %}
+  "articleBody": {{ article.content | strip_html | json }},{% if article.excerpt != blank %}
+    "description" : {{ article.excerpt | strip_html | json }},{% endif %}
   {% if article.image %}
-    "image": [
-    {{ article.image | img_url: "medium" | prepend: 'https:' | json }}
-    ],
-  {% endif %}
+    "image" : [{{ article.image | img_url: "medium" | prepend: 'https:' | json }}],{% endif %}
   "datePublished": {{ article.published_at | date: format: "default" | json }},
   "dateCreated": {{ article.created_at | date: format: "default" | json }},
   "author": {
-          "@type": "Person",
-          "name": {{ article.author | json }}
+        "@type": "Person",
+        "name": {{ article.author | json }}
   },
   "publisher": {
-          "@type": "Organization",
-          "name": {{ shop.name | json }}
+        "@type": "Organization",
+        "name": {{ shop.name | json }}
   }
   }
 </script>
