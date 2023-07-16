@@ -51,7 +51,7 @@
       </div>
     </div>
     <div class="product--information sticky top-5 p-2">
-      {% form 'product', product %}
+      {% form 'product', product, id: 'product-form', novalidate: 'novalidate' %}
         <input
           type="hidden"
           name="id"
@@ -148,12 +148,15 @@
       this.addEventListener("change", this.onVariantChange);
     }
     onVariantChange() {
-      this.getSelectedOptions();
+      this.getSelectedOption();
       this.getSelectVariant();
+      if (this.currentVariant) {
+        this.updateURL();
+      }
     }
-    getSelectedOptions() {
-      this.options = Array.from(this.querySelectorAll('select'), (select) => select.value);
-      console.log(this.options);
+    getSelectedOption() {
+      this.option = Array.from(this.querySelectorAll('select'), (select) => select.value);
+      console.log(this.option)
     }
     getVariantJSON() {
       this.variantData = this.variantData || JSON.parse(this.querySelector('[type="application/json"]').textContent);
@@ -161,14 +164,29 @@
     }
     getSelectVariant() {
       this.currentVariant = this.getVariantJSON().find((variant) => {
-        const findings = variant.options.map((option, index) => {
-          return this.option[index] === option;
+        const findings = !variant.options.map((option, index) => {
+          return this.options[index] === option;
         }).includes(false);
 
-      })
+        if (findings) 
+          return variant;
+        
+
+
+      });
+      console.log(this.currentVariant);
+    }
+    updateURL() {
+      if (!this.currentVariant) 
+        return;
+      
+      window.history.replaceState({}, '', `${
+        this.dataset.url
+      }?variant=${
+        this.currentVariant.id
+      }`);
     }
   }
-
   customElements.define("variant-selector", VariantSelector);
 </script>
 
