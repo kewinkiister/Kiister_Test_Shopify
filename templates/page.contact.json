@@ -1,9 +1,9 @@
 {
     "sections": {
-        "template":{
+        "template": {
             "type": "template-page"
         },
-        "contact-form":{
+        "contact-form": {
             "type": "contact-form"
         }
     },
